@@ -1,0 +1,42 @@
+From 021de57c7b520393812a84aedd354569319b9593 Mon Sep 17 00:00:00 2001
+From: Ina Panova <ipanova@redhat.com>
+Date: Fri, 30 Apr 2021 14:21:20 +0200
+Subject: [PATCH] Fixed "connection already closed" error in the Registry
+ handler.
+
+closes #8672
+---
+ CHANGES/8672.bugfix            | 1 +
+ pulp_container/app/registry.py | 4 ++++
+ 2 files changed, 5 insertions(+)
+ create mode 100644 CHANGES/8672.bugfix
+
+diff --git a/CHANGES/8672.bugfix b/CHANGES/8672.bugfix
+new file mode 100644
+index 00000000..1f43b72d
+--- /dev/null
++++ b/CHANGES/8672.bugfix
+@@ -0,0 +1 @@
++Fixed "connection already closed" error in the Registry handler.
+diff --git a/pulp_container/app/registry.py b/pulp_container/app/registry.py
+index 2b42cc51..5b8d8cc3 100644
+--- a/pulp_container/app/registry.py
++++ b/pulp_container/app/registry.py
+@@ -97,6 +97,8 @@ async def get_tag(self, request):
+                 streamed back to the client.
+ 
+         """
++        self._reset_db_connection()
++
+         path = request.match_info["path"]
+         tag_name = request.match_info["tag_name"]
+         distribution = self._match_distribution(path)
+@@ -203,6 +205,8 @@ async def get_by_digest(self, request):
+         """
+         Return a response to the "GET" action.
+         """
++        self._reset_db_connection()
++
+         path = request.match_info["path"]
+         digest = "sha256:{digest}".format(digest=request.match_info["digest"])
+         distribution = self._match_distribution(path)

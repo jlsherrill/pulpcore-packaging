@@ -9,6 +9,7 @@ Summary:        Container plugin for the Pulp Project
 License:        GPLv2+
 URL:            https://pulpproject.org/
 Source0:        https://files.pythonhosted.org/packages/source/p/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
+Patch0:         8672.patch
 BuildArch:      noarch
 
 BuildRequires:  python%{python3_pkgversion}-devel
